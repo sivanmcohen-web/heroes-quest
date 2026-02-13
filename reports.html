@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דוחות והתקדמות - משימות הגיבורים</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --secondary: #f7931e;
+            --success: #4ecdc4;
+            --danger: #ff006e;
+            --dark: #1a1a2e;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-family: 'Rubik', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, var(--gold), var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--success);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            text-align: center;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .section {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--gold);
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table th {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            text-align: right;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .results-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .hero-noam {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+        }
+
+        .hero-yuval {
+            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+        }
+
+        .hero-omer {
+            background: linear-gradient(135deg, #4ecdc4, #06ffa5);
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .score-excellent {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: var(--dark);
+        }
+
+        .score-good {
+            background: linear-gradient(135deg, var(--success), #06ffa5);
+        }
+
+        .score-ok {
+            background: linear-gradient(135deg, var(--silver), #e8e8e8);
+            color: var(--dark);
+        }
+
+        .score-needs-work {
+            background: linear-gradient(135deg, var(--danger), #cc0057);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--gold);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, var(--danger), #cc0057);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-table {
+                font-size: 0.9rem;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← חזור לבית</a>
+
+        <header>
+            <h1>📊 דוחות והתקדמות 📊</h1>
+            <p class="subtitle">מעקב אחר כל ההישגים והתוצאות</p>
+        </header>
+
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="summaryStats"></div>
+
+        <!-- Game Results -->
+        <div class="section">
+            <h2 class="section-title">🎮 תוצאות משחקי למידה</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterGames('all')">הכל</button>
+                <button class="filter-btn" onclick="filterGames('נועם')">נועם</button>
+                <button class="filter-btn" onclick="filterGames('יובל')">יובל</button>
+                <button class="filter-btn" onclick="filterGames('עומר')">עומר</button>
+                <button class="clear-btn" onclick="clearGameData()">🗑️ נקה נתונים</button>
+            </div>
+            <div id="gameResults"></div>
+        </div>
+
+        <!-- Signature Cards Summary -->
+        <div class="section">
+            <h2 class="section-title">📋 סיכום כרטיסיות חתימות</h2>
+            <div id="signatureSummary"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSummaryStats();
+            loadGameResults();
+            loadSignatureSummary();
+        });
+
+        // Load summary statistics
+        function loadSummaryStats() {
+            const gameResults = JSON.parse(localStorage.getItem('gameResults')) || [];
+            const dailyCards = JSON.parse(localStorage.getItem('dailyCards')) || {};
+
+            const totalGames = gameResults.length;
+            const avgScore = gameResults.length > 0 
+                ? Math.round(gameResults.reduce((sum, r) => sum + r.score, 0) / gameResults.length)
+                : 0;
+            const avgAccuracy = gameResults.length > 0
+                ? Math.round(gameResults.reduce((sum, r) => sum + r.accuracy, 0) / gameResults.length)
+                : 0;
+            const totalCards = Object.keys(dailyCards).length;
+
+            document.getElementById('summaryStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-value">${totalGames}</div>
+                    <div class="stat-label">משחקים ששוחקו</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value">${avgScore}</div>
+                    <div class="stat-label">ציון ממוצע</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value">${avgAccuracy}%</div>
+                    <div class="stat-label">דיוק ממוצע</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-value">${totalCards}</div>
+                    <div class="stat-label">כרטיסיות הועלו</div>
+                </div>
+            `;
+        }
+
+        // Load game results
+        function loadGameResults() {
+            const gameResults = JSON.parse(localStorage.getItem('gameResults')) || [];
+            
+            if (gameResults.length === 0) {
+                document.getElementById('gameResults').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎮</div>
+                        <h3>עדיין אין תוצאות משחקים</h3>
+                        <p>התוצאות יופיעו כאן אחרי שהילדים ישחקו במשחקי הלמידה</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter results
+            const filteredResults = currentFilter === 'all' 
+                ? gameResults 
+                : gameResults.filter(r => r.hero === currentFilter);
+
+            // Sort by date (newest first)
+            filteredResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const tableHTML = `
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>תאריך</th>
+                            <th>ילד</th>
+                            <th>משחק</th>
+                            <th>ציון</th>
+                            <th>דיוק</th>
+                            <th>רמה</th>
+                            <th>ביצועים</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredResults.map(result => {
+                            const date = new Date(result.date);
+                            const dateStr = `${date.getDate()}/${date.getMonth() + 1} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                            
+                            const heroClass = result.hero === 'נועם' ? 'hero-noam' : result.hero === 'יובל' ? 'hero-yuval' : 'hero-omer';
+                            
+                            let scoreClass = 'score-needs-work';
+                            if (result.accuracy >= 90) scoreClass = 'score-excellent';
+                            else if (result.accuracy >= 75) scoreClass = 'score-good';
+                            else if (result.accuracy >= 60) scoreClass = 'score-ok';
+
+                            const difficultyEmoji = {
+                                easy: '🟢',
+                                medium: '🟡',
+                                hard: '🔴'
+                            }[result.difficulty] || '🟡';
+
+                            return `
+                                <tr>
+                                    <td>${dateStr}</td>
+                                    <td><span class="hero-badge ${heroClass}">${result.hero}</span></td>
+                                    <td>${result.game}</td>
+                                    <td><strong>${result.score}</strong></td>
+                                    <td><span class="score-badge ${scoreClass}">${result.accuracy}%</span></td>
+                                    <td>${difficultyEmoji} ${result.difficulty}</td>
+                                    <td>${result.performance}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('gameResults').innerHTML = tableHTML;
+        }
+
+        // Load signature cards summary
+        function loadSignatureSummary() {
+            const dailyCards = JSON.parse(localStorage.getItem('dailyCards')) || {};
+            
+            if (Object.keys(dailyCards).length === 0) {
+                document.getElementById('signatureSummary').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <h3>עדיין אין כרטיסיות</h3>
+                        <p>הכרטיסיות יופיעו כאן אחרי שהילדים יעלו תמונות</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate stats per hero
+            const heroes = ['נועם', 'יובל', 'עומר'];
+            const heroStats = {};
+
+            heroes.forEach((hero, heroId) => {
+                const heroCards = Object.entries(dailyCards).filter(([key]) => key.startsWith(`${heroId + 1}-`));
+                const totalCards = heroCards.length;
+                const uploadedCards = heroCards.filter(([, card]) => card.photoUploaded).length;
+                
+                heroStats[hero] = {
+                    total: totalCards,
+                    uploaded: uploadedCards,
+                    percentage: totalCards > 0 ? Math.round((uploadedCards / totalCards) * 100) : 0
+                };
+            });
+
+            const summaryHTML = `
+                <div class="stats-grid">
+                    ${heroes.map(hero => {
+                        const stats = heroStats[hero];
+                        const heroClass = hero === 'נועם' ? 'hero-noam' : hero === 'יובל' ? 'hero-yuval' : 'hero-omer';
+                        
+                        return `
+                            <div class="stat-card">
+                                <div class="stat-icon">${hero === 'נועם' ? '🦸' : hero === 'יובל' ? '🧙' : '🦹'}</div>
+                                <h3 class="hero-badge ${heroClass}" style="font-size: 1.3rem; margin-bottom: 15px;">${hero}</h3>
+                                <div class="stat-value">${stats.uploaded}/${stats.total}</div>
+                                <div class="stat-label">כרטיסיות הועלו</div>
+                                <div style="margin-top: 15px; font-size: 1.5rem; font-weight: 800; color: var(--gold);">
+                                    ${stats.percentage}%
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            document.getElementById('signatureSummary').innerHTML = summaryHTML;
+        }
+
+        // Filter games
+        function filterGames(hero) {
+            currentFilter = hero;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadGameResults();
+        }
+
+        // Clear game data
+        function clearGameData() {
+            if (confirm('האם את בטוחה שאת רוצה למחוק את כל תוצאות המשחקים? פעולה זו לא ניתנת לביטול!')) {
+                localStorage.removeItem('gameResults');
+                loadSummaryStats();
+                loadGameResults();
+                alert('✅ כל תוצאות המשחקים נמחקו');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="מערכת משימות הגיבורים - כרטיסיות חתימות ומשחקי למידה">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>משימות הגיבורים - בית</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --secondary: #f7931e;
+            --success: #4ecdc4;
+            --danger: #ff006e;
+            --dark: #1a1a2e;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            animation: bgShift 20s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Rubik', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.6)); }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 107, 53, 0.9)); }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .app-card {
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: white;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .app-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 60px rgba(255, 107, 53, 0.5);
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-icon {
+            font-size: 6rem;
+            text-align: center;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .app-title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+
+        .app-description {
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .install-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideDown 0.6s ease-out;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .install-banner.show {
+            display: block;
+        }
+
+        .install-banner h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .btn-install {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .btn-install:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="install-banner" id="installBanner">
+            <h3>📱 התקן את האפליקציה!</h3>
+            <p style="margin-bottom: 15px;">קבל גישה מהירה ישירות מהמסך הראשי</p>
+            <button class="btn-install" id="installButton">התקן עכשיו</button>
+        </div>
+
+        <header>
+            <h1>🏆 משימות הגיבורים 🏆</h1>
+            <p class="subtitle">המערכת המשפחתית לניהול משימות ולמידה</p>
+        </header>
+
+        <div class="app-grid">
+            <a href="signatures.html" class="app-card">
+                <div class="app-icon">📋</div>
+                <h2 class="app-title">כרטיסיות חתימות</h2>
+                <p class="app-description">
+                    מעקב יומי אחר חתימות המורים, סיכום שבועי ומערכת פרסים מלאה
+                </p>
+            </a>
+
+            <a href="games.html" class="app-card">
+                <div class="app-icon">🎮</div>
+                <h2 class="app-title">משחקי למידה</h2>
+                <p class="app-description">
+                    משחקים אינטראקטיביים במתמטיקה, שפה וחשיבה - מותאמים לכל ילד
+                </p>
+            </a>
+
+            <a href="reports.html" class="app-card">
+                <div class="app-icon">📊</div>
+                <h2 class="app-title">דוחות והתקדמות</h2>
+                <p class="app-description">
+                    צפייה בכל התוצאות, הישגים וההתקדמות של הילדים
+                </p>
+            </a>
+        </div>
+
+        <footer>
+            <p>מערכת משימות הגיבורים © 2026</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">גרסה 1.0.0</p>
+        </footer>
+    </div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Install prompt
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installButton = document.getElementById('installButton');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.add('show');
+        });
+
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                deferredPrompt = null;
+                installBanner.classList.remove('show');
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installed');
+            installBanner.classList.remove('show');
+        });
+    </script>
+</body>
+</html>

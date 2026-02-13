@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Icon Generator</title>
+</head>
+<body>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    
+    <script>
+        function createIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(0.5, '#764ba2');
+            gradient.addColorStop(1, '#f093fb');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add glow effect
+            ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+            ctx.shadowBlur = size * 0.05;
+            
+            // Draw trophy emoji (using text)
+            ctx.font = `bold ${size * 0.5}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🏆', size / 2, size / 2);
+            
+            // Add title on smaller icon
+            if (size === 192) {
+                ctx.shadowBlur = 0;
+                ctx.font = `bold ${size * 0.12}px Arial`;
+                ctx.fillStyle = '#FFD700';
+                ctx.strokeStyle = '#1a1a2e';
+                ctx.lineWidth = 3;
+                ctx.strokeText('גיבורים', size / 2, size * 0.85);
+                ctx.fillText('גיבורים', size / 2, size * 0.85);
+            }
+        }
+        
+        createIcon('canvas192', 192);
+        createIcon('canvas512', 512);
+    </script>
+</body>
+</html>
