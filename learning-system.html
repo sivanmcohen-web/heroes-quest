@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משחקי למידה</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#10b981,#059669);min-height:100vh;color:#fff;padding:15px}
+.screen{display:none}
+.screen.active{display:block}
+.container{max-width:600px;margin:0 auto;padding-top:30px}
+.box{background:rgba(255,255,255,0.15);backdrop-filter:blur(20px);border-radius:30px;padding:40px 30px;border:3px solid rgba(255,255,255,0.3);box-shadow:0 25px 60px rgba(0,0,0,0.3);margin-bottom:25px}
+.icon{font-size:6rem;text-align:center;margin-bottom:25px;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+h1{font-size:2.2rem;text-align:center;margin-bottom:20px;color:#ffd700;font-weight:900;text-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.subtitle{text-align:center;font-size:1.2rem;margin-bottom:30px;line-height:1.6;opacity:0.95}
+.input{width:100%;padding:20px;font-size:1.5rem;border:3px solid rgba(255,255,255,0.4);border-radius:20px;background:rgba(255,255,255,0.15);color:#fff;text-align:center;margin-bottom:25px;font-weight:700;letter-spacing:2px}
+.input::placeholder{color:rgba(255,255,255,0.6)}
+.input:focus{outline:none;border-color:#ffd700;background:rgba(255,255,255,0.25);box-shadow:0 0 25px rgba(255,215,0,0.4)}
+.btn{width:100%;padding:22px;font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#ffd700,#ffed4e);color:#065f46;border:none;border-radius:20px;cursor:pointer;box-shadow:0 12px 35px rgba(255,215,0,0.45);transition:all 0.3s ease}
+.btn:active{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,0.6)}
+.error{background:rgba(248,113,113,0.3);border:2px solid #f87171;border-radius:15px;padding:15px;margin-top:20px;text-align:center;font-weight:700;display:none}
+.error.show{display:block;animation:shake 0.5s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.avatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin:0 auto 20px;border:4px solid rgba(255,255,255,0.4);box-shadow:0 10px 30px rgba(0,0,0,0.3)}
+.noam{background:linear-gradient(135deg,#10b981,#059669)}
+.omer{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+.yuval{background:linear-gradient(135deg,#ff6b9d,#c471ed)}
+.welcome-text{font-size:1.3rem;text-align:center;margin:20px 0;line-height:1.8}
+.stats{background:rgba(0,0,0,0.2);border-radius:18px;padding:20px;margin:25px 0}
+.stat-title{font-size:1.1rem;font-weight:700;margin-bottom:15px;color:#ffd700}
+.progress-bar{background:rgba(0,0,0,0.3);height:25px;border-radius:12px;overflow:hidden;margin:10px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,#4ade80,#10b981);transition:width 1s ease;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#fff}
+.lesson-card{background:rgba(26,26,46,0.85);backdrop-filter:blur(15px);border-radius:25px;padding:30px;border:3px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.4s ease;margin:20px 0}
+.lesson-card:active{transform:translateY(-8px) scale(1.02);border-color:#10b981;box-shadow:0 20px 50px rgba(16,185,129,0.5)}
+.lesson-card.locked{opacity:0.5;cursor:not-allowed}
+.lesson-icon{font-size:4rem;text-align:center;margin-bottom:20px}
+.lesson-title{font-size:1.7rem;font-weight:800;text-align:center;margin-bottom:12px;color:#ffd700}
+.lesson-desc{text-align:center;color:rgba(255,255,255,0.85);margin-bottom:15px;line-height:1.6}
+.lesson-status{text-align:center;padding:12px;border-radius:12px;font-weight:700;margin-top:15px}
+.ready{background:linear-gradient(135deg,#4ade80,#10b981)}
+.locked-status{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)}
+.question{font-size:2.8rem;text-align:center;margin:35px 0;color:#ffd700;font-weight:900}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:25px 0}
+.answer{padding:28px;font-size:1.6rem;background:rgba(255,255,255,0.1);border:3px solid rgba(255,255,255,0.3);border-radius:18px;cursor:pointer;text-align:center;font-weight:700;transition:all 0.3s ease}
+.answer:active{transform:scale(0.95);background:rgba(255,255,255,0.2);border-color:#ffd700}
+.answer.correct{background:linear-gradient(135deg,#4ade80,#10b981);border-color:#4ade80}
+.answer.wrong{background:linear-gradient(135deg,#f87171,#dc2626);border-color:#f87171}
+.feedback{text-align:center;font-size:1.3rem;margin:25px 0;min-height:60px;font-weight:700;line-height:1.6}
+.feedback.correct{color:#4ade80}
+.feedback.wrong{color:#fca5a5}
+.explain{font-size:1.2rem;line-height:1.8;text-align:center;margin:25px 0}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:25px 0}
+.example{background:rgba(16,185,129,0.25);border:3px solid #10b981;border-radius:15px;padding:20px;text-align:center;font-size:1.5rem;font-weight:700}
+.final-score{font-size:3.5rem;color:#ffd700;text-align:center;margin:30px 0;font-weight:900}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="screen active">
+<div class="container">
+<div class="box">
+<div class="icon">🎮</div>
+<h1>משחקי למידה</h1>
+<p class="subtitle">היכנסו עם מספר הטלפון שלכם<br>רק בפעם הראשונה!</p>
+<input type="tel" class="input" id="phoneInput" placeholder="05X-XXX-XXXX" maxlength="10">
+<button class="btn" onclick="login()">🚀 כניסה</button>
+<div class="error" id="errorMsg">❌ מספר לא נכון, נסו שוב!</div>
+</div>
+</div>
+</div>
+
+<div id="dashboardScreen" class="screen">
+<div class="container">
+<div class="box">
+<div class="avatar" id="userAvatar"></div>
+<h1 id="userName"></h1>
+<p class="welcome-text" id="welcomeMsg"></p>
+
+<div class="stats">
+<div class="stat-title">📊 ההתקדמות שלך</div>
+<div style="margin:15px 0">
+<div style="display:flex;justify-content:space-between;margin-bottom:8px">
+<span>לוח הכפל</span>
+<span id="mathProgress">10%</span>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="mathBar" style="width:10%">⭐</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="startLesson()">
+<div class="lesson-icon">🎯</div>
+<h2 class="lesson-title">כפל של 1</h2>
+<p class="lesson-desc">נלמד את הבסיס של לוח הכפל - כפל במספר 1</p>
+<div class="lesson-status ready">🚀 מוכן ללמידה!</div>
+</div>
+
+<div class="lesson-card locked">
+<div class="lesson-icon">🔒</div>
+<h2 class="lesson-title">כפל של 2</h2>
+<p class="lesson-desc">אחרי שנשלים כפל של 1</p>
+<div class="lesson-status locked-status">נעול</div>
+</div>
+</div>
+</div>
+
+<div id="lessonScreen" class="screen">
+<div class="container">
+<div class="box" id="lessonContent"></div>
+</div>
+</div>
+
+<script>
+const users={
+'0559907670':{name:'נועם',emoji:'🦸',grade:5,theme:'noam'},
+'0559957502':{name:'עומר',emoji:'🦹',grade:4,theme:'omer'},
+'0529928161':{name:'יובל',emoji:'🧙',grade:6,theme:'yuval'}
+};
+
+let currentUser=null;
+let step=0;
+let score=0;
+
+const steps=[
+{title:'ברוך הבא!',content:'<div class="icon">🎉</div><p class="explain">היום נלמד <strong>כפל של 1</strong><br><br>זה הבסיס של כל לוח הכפל!<br>אחרי שתבין את זה, כל השאר יהיה קל! 💪</p>'},
+{title:'מה זה כפל של 1?',content:'<div class="icon">🧠</div><p class="explain">כשאנחנו כופלים מספר כלשהו ב-1,<br>התוצאה היא... <strong>אותו מספר בדיוק!</strong> 🎯<br><br>למה? כי אנחנו לוקחים את המספר פעם אחת בלבד!<br><br><strong style="color:#ffd700">הכלל הזהב:</strong><br>כל מספר × 1 = אותו מספר</p>'},
+{title:'דוגמאות',content:'<div class="explain">תסתכל על הדוגמאות האלה:</div><div class="examples"><div class="example">1×1=1</div><div class="example">2×1=2</div><div class="example">3×1=3</div><div class="example">4×1=4</div><div class="example">5×1=5</div><div class="example">6×1=6</div></div><p class="explain">רואה? התוצאה תמיד זהה למספר! 🎯</p>'},
+{q:3},{q:7},{q:5},{q:9},{q:6},
+{title:'סיימנו!',content:'<div class="icon">🏆</div><h1 style="color:#ffd700;margin:25px 0;font-size:2.5rem">כל הכבוד!</h1><div class="final-score" id="finalScore"></div><p class="explain" id="finalMsg"></p>'}
+];
+
+window.onload=function(){
+const saved=localStorage.getItem('currentUserId');
+if(saved&&users[saved]){
+currentUser=users[saved];
+showDashboard();
+}
+};
+
+function login(){
+const phone=document.getElementById('phoneInput').value.trim();
+if(users[phone]){
+currentUser=users[phone];
+localStorage.setItem('currentUserId',phone);
+showDashboard();
+}else{
+document.getElementById('errorMsg').classList.add('show');
+setTimeout(()=>document.getElementById('errorMsg').classList.remove('show'),3000);
+}
+}
+
+function showDashboard(){
+document.getElementById('loginScreen').classList.remove('active');
+document.getElementById('dashboardScreen').classList.add('active');
+document.getElementById('userAvatar').className='avatar '+currentUser.theme;
+document.getElementById('userAvatar').textContent=currentUser.emoji;
+document.getElementById('userName').textContent='שלום '+currentUser.name+'! 💚';
+document.getElementById('welcomeMsg').textContent='כיתה '+currentUser.grade+' | מתחיל ללמוד כפל!';
+}
+
+function startLesson(){
+step=0;
+score=0;
+document.getElementById('dashboardScreen').classList.remove('active');
+document.getElementById('lessonScreen').classList.add('active');
+renderStep();
+}
+
+function renderStep(){
+const s=steps[step];
+if(s.q){
+document.getElementById('lessonContent').innerHTML='<h1>שאלה '+(step-2)+'/5</h1><div class="question">'+s.q+' × 1 = ?</div><div class="answers">'+generateAnswers(s.q).map(n=>'<div class="answer" onclick="checkAnswer('+n+','+s.q+')">'+n+'</div>').join('')+'</div><div class="feedback" id="fb"></div>';
+}else{
+document.getElementById('lessonContent').innerHTML='<h1>'+s.title+'</h1>'+s.content+'<button class="btn" onclick="nextStep()">המשך ➡️</button>';
+if(s.title==='סיימנו!'){
+document.getElementById('finalScore').textContent=score+'/5';
+document.getElementById('finalMsg').textContent=score>=4?'מדהים! אתה ממש שולט בזה! 🌟':score>=3?'יפה מאוד! המשך כך! 👍':'התחלה טובה! בוא נתרגל עוד 💪';
+}
+}
+}
+
+function generateAnswers(correct){
+const ans=[correct];
+while(ans.length<4){
+const wrong=correct+Math.floor(Math.random()*6)-3;
+if(wrong!==correct&&wrong>0&&!ans.includes(wrong))ans.push(wrong);
+}
+return ans.sort(()=>Math.random()-0.5);
+}
+
+function checkAnswer(selected,correct){
+const fb=document.getElementById('fb');
+const btns=document.querySelectorAll('.answer');
+btns.forEach(b=>b.style.pointerEvents='none');
+event.target.classList.add(selected===correct?'correct':'wrong');
+if(selected===correct){
+fb.innerHTML='🎉 נכון מאוד! '+correct+' × 1 = '+correct;
+fb.className='feedback correct';
+score++;
+}else{
+fb.innerHTML='❌ לא נכון. התשובה הנכונה: '+correct+'<br>(זוכר? כל מספר × 1 = אותו מספר)';
+fb.className='feedback wrong';
+}
+setTimeout(nextStep,2500);
+}
+
+function nextStep(){
+step++;
+if(step<steps.length)renderStep();
+else backToDashboard();
+}
+
+function backToDashboard(){
+document.getElementById('lessonScreen').classList.remove('active');
+document.getElementById('dashboardScreen').classList.add('active');
+document.getElementById('mathProgress').textContent='20%';
+document.getElementById('mathBar').style.width='20%';
+}
+
+document.getElementById('phoneInput').oninput=function(e){
+e.target.value=e.target.value.replace(/[^0-9]/g,'');
+};
+
+document.getElementById('phoneInput').onkeypress=function(e){
+if(e.key==='Enter')login();
+};
+</script>
+</body>
+</html>
